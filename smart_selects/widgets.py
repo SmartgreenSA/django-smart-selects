@@ -167,8 +167,9 @@ class ChainedSelect(Select):
                    'empty_label': empty_label}
         final_choices = []
 
-        if value:
-            item = self.queryset.filter(pk=value)[0]
+        item = self.queryset.filter(pk=value).first()
+
+        if item:
             try:
                 pk = getattr(item, self.model_field + "_id")
                 filter = {self.model_field: pk}
@@ -203,4 +204,4 @@ class ChainedSelect(Select):
             final_attrs['class'] = 'chained'
         output = super(ChainedSelect, self).render(name, value, final_attrs, choices=final_choices)
         output += js
-        return mark_safe(output)
+		return mark_safe(output)
