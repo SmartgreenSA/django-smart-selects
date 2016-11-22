@@ -35,6 +35,7 @@ class ChainedSelect(Select):
         self.auto_choose = auto_choose
         self.manager = manager
         self.view_name = view_name
+        self.choices = ()
         super(Select, self).__init__(*args, **kwargs)
 
     class Media:
@@ -191,9 +192,9 @@ class ChainedSelect(Select):
             for choice in filtered:
                 final_choices.append((choice.pk, force_text(choice)))
         if len(final_choices) > 1:
-            final_choices = [("", (empty_label))] + final_choices
+            final_choices = [("", empty_label)] + final_choices
         if self.show_all:
-            final_choices.append(("", (empty_label)))
+            final_choices.append(("", empty_label))
             self.choices = list(self.choices)
             self.choices.sort(key=lambda x: unicode_sorter(x[1]))
             for ch in self.choices:
@@ -207,4 +208,4 @@ class ChainedSelect(Select):
             final_attrs['class'] = 'chained'
         output = super(ChainedSelect, self).render(name, value, final_attrs, choices=final_choices)
         output += js
-		return mark_safe(output)
+        return mark_safe(output)
