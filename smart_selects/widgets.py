@@ -167,7 +167,10 @@ class ChainedSelect(Select):
                    'empty_label': empty_label}
         final_choices = []
 
-        item = self.queryset.filter(pk=value).first()
+        try:
+            item = self.queryset.filter(pk=value).first()
+        except ValueError:
+            item = None
 
         if item:
             try:
